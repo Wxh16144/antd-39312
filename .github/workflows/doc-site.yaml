@@ -7,6 +7,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Check
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        
     # transform version e.g. v1.23.4 to 1-23-4
     - name: Get version
       id: publish-version
