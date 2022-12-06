@@ -12,6 +12,14 @@ jobs:
       id: publish-version
       run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/v//g' | sed 's/\./-/g')" >> $GITHUB_OUTPUT
     
-    # echo version
-    - name: Echo version
-      run: echo ${{ steps.publish-version.outputs.VERSION }}
+    - name: Deploy to Surge (with TAG)
+      id: deploy
+      run: |
+        export DEPLOY_DOMAIN=wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
+        npx surge --project ./ --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN }}
+
+    - name: Create Commit Comment
+      uses: peter-evans/commit-comment@v1
+      with:
+        body: |
+          Doc site for this release: https://wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
