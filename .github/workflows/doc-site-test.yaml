@@ -1,0 +1,17 @@
+name: Doc Site Test
+on:
+  release
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Echo release Action type
+      run: echo ${{ github.event.release.action }}
+
+    - name: Get version
+      id: publish-version
+      run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/v//g' | sed 's/\./-/g')" >> $GITHUB_OUTPUT
+    
+    - name: Echo version
+      run: echo ${{ steps.publish-version.outputs.VERSION }}
