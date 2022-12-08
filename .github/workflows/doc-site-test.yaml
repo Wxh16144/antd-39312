@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Echo release Action type
-      run: echo ${{ github.event.release.action }}
+      run: echo ${{ github.event.action }}
 
     - name: Get version
       id: publish-version
