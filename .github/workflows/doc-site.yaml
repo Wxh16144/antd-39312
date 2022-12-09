@@ -2,6 +2,9 @@ name: Doc Site
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - v8.*
   workflow_dispatch:
 
 jobs:
