@@ -6,11 +6,13 @@ on:
 jobs:
   release-helper:
     runs-on: ubuntu-latest
+    if: false # disable this job
     steps:
       - name: make release
         if: github.event.ref_type == 'tag'
         uses: actions-cool/release-helper@v2
         with:
+          # 不使用 GITHUB_TOKEN，因为 GITHUB_TOKEN 无法触发 release 事件
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           triger: 'tag'
           changelogs: 'CHANGELOG.md'
