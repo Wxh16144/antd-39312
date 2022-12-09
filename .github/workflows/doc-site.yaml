@@ -9,24 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/') && (contains(github.ref_name, '-') == false)
     steps:
-    - name: Check
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        
-    # transform version e.g. v1.23.4 to 1-23-4
-    - name: Get version
-      id: publish-version
-      run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/v//g' | sed 's/\./-/g')" >> $GITHUB_OUTPUT
-    
-    - name: Deploy to Surge (with TAG)
-      id: deploy
-      run: |
-        export DEPLOY_DOMAIN=wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
-        npx surge --project ./ --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN }}
+      - name: Check
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Create Commit Comment
-      uses: peter-evans/commit-comment@v1
-      with:
-        body: |
-          Doc site for this release: https://wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
+      # transform version e.g. v1.23.4 to 1-23-4
+      - name: Get version
+        id: publish-version
+        run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/v//g' | sed 's/\./-/g')" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Surge (with TAG)
+        id: deploy
+        run: |
+          export DEPLOY_DOMAIN=wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
+          npx surge --project ./ --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN }}
+
+      - name: Create Commit Comment
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: |
+            Doc site for this release: https://wxh16144-test-${{ steps.publish-version.outputs.VERSION }}.surge.sh
